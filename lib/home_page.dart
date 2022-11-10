@@ -50,6 +50,13 @@ class _HomePageState extends State<HomePage> {
                   ],
                 );
               });
+        } else {
+          String? validateTask(String value) {
+            if (value.trim().isEmpty)
+              return 'Text Field Cannot be empty';
+            else
+              return null;
+          }
         }
       },
     );
@@ -89,9 +96,9 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 45),
             NewTask(
-              onAddTask: addToListMethod,
-              taskController: taskController,
-            ),
+                onAddTask: addToListMethod,
+                taskController: taskController,
+                validateTask: validateTask(taskController.text.toString())),
             Expanded(
               child: ListView(
                   padding: EdgeInsets.zero,
