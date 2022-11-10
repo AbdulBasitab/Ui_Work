@@ -18,6 +18,43 @@ class _HomePageState extends State<HomePage> {
   bool check3 = false;
   bool check4 = false;
 
+  final taskController = TextEditingController();
+
+  void addToListMethod() {
+    return setState(
+      () {
+        if (taskController.text.isNotEmpty &&
+            taskController.text.trim().isNotEmpty) {
+          Task.taskList.add(Task(
+              title: taskController.text,
+              subText: '',
+              tag: Icons.color_lens_rounded,
+              tagText: 'Design',
+              notifiText1: '',
+              notifiText2: ''));
+          taskController.text = '';
+        } else if (taskController.text.isEmpty) {
+          showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Error!'),
+                  content: const Text('Task Cannot be empty'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +88,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 45),
-            const NewTask(),
+            NewTask(
+              onAddTask: addToListMethod,
+              taskController: taskController,
+            ),
             Expanded(
               child: ListView(
                   padding: EdgeInsets.zero,
